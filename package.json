@@ -1,0 +1,30 @@
+{
+  "name": "ureport",
+  "description": "ureport app",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "sapper dev",
+    "build": "sapper build",
+    "export": "sapper export",
+    "start": "sapper start",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "test": "run-p --race dev cy:run",
+    "preinstall": "./bin/preinstall.sh",
+    "postinstall": "./bin/postinstall.sh"
+  },
+  "dependencies": {
+    "compression": "^1.7.2",
+    "file-loader": "^1.1.11",
+    "image-webpack-loader": "^4.2.0",
+    "node-sass": "^4.8.3",
+    "npm-run-all": "^4.1.2",
+    "open-iconic": "^1.1.1",
+    "polka": "^0.3.4",
+    "sapper": "^0.10.6",
+    "serve-static": "^1.13.2",
+    "svelte": "^2.1.0",
+    "svelte-loader": "^2.8.1",
+    "webpack": "^4.6.0"
+  }
+}
