@@ -3,171 +3,22 @@
 </svelte:head>
 
 <Layout page='feeds'>
-	<form ref:form class="form__feeds" action="." autocomplete="off" on:submit=__submit(event)>
-		<div class="title"><h1>Your Feeds</h1></div>
-		<ul ref:row__add class="row">
-			<li>
-				<input
-					ref:input__url__feed
-					type="text"
-					name="url__feed"
-					id="url__feed"
-					placeholder="Feed URL"
-				>
-			</li>
-			<li>
-				<input
-					ref:input__name__feed
-					type="text"
-					name="name__feed"
-					id="name__feed"
-					placeholder="Feed Name"
-				>
-			</li>
-			<li><button>Add Feed</button></li>
-		</ul>
-		{#each feeds as feed}
-		  <ul class="row">
-				<li>
-					{#if feed == feed__edit}
-						<input
-							type="text"
-							data-feed={feed}
-							name="url__feed"
-							value={feed__edit.url__feed}
-							on:change="__submit__edit(event, feed)"
-						/>
-					{:else}
-						<a href="{feed.url__feed}" target="_blank" >{feed.url__feed}</a>
-					{/if}
-				</li>
-				<li>
-					{#if feed == feed__edit}
-						<input
-							type="text"
-							data-feed={feed}
-							name="name__feed"
-							value={feed__edit.name__feed}
-							on:change="__submit__edit(event, feed)"
-						/>
-					{:else}
-						{feed.name__feed}
-					{/if}
-				</li>
-				<li>
-					<button data-feed={feed} on:click="__click__edit(event, feed)">
-						<img src={pencil_svg} alt="Edit Feed">
-					</button>
-				</li>
-			</ul>
-		{/each}
-	</form>
+	<App__Feeds></App__Feeds>
 </Layout>
-
-<style type="text/scss" lang="sass">
-	.form__feeds {
-		display: table;
-		min-width: 20rem;
-		h1 {
-			column-span: all;
-		}
-		.title {
-			display: table-caption;
-		}
-		.row {
-			display: table-row;
-			list-style: none;
-			padding-left: 0;
-			> * {
-				padding: 0.4em;
-				display: table-cell;
-				overflow: hidden;
-			}
-		}
-		input {
-			border: none;
-			border-bottom: 1px dotted #AAAAAA;
-			width: 100%;
-		}
-	}
-</style>
 
 <script>
 	import {_store} from 'ctx-core/store/lib.mjs'
-	import {__store__feeds} from '__/feeds/store.mjs'
-	import {_dom, closest} from 'ctx-core/dom/lib.mjs'
-	import pencil_svg from 'open-iconic/svg/pencil.svg'
 	import Layout from '__/layout/Layout.html'
-	import {log,debug} from 'ctx-core/logger/lib.mjs'
+	import App__Feeds from '__/feeds/App__Feeds.html'
 	const logPrefix = 'routes/feed.html'
 	export default {
 		store: _store,
 		components: {
-			Layout
+			Layout,
+			App__Feeds
 		},
 
 		preload({ params, query }) {
 		},
-
-		oncreate() {
-			__store__feeds(this.store)
-		},
-
-		computed: {
-			feeds: ({$feeds}) =>
-				$feeds || []
-		},
-
-		helpers: {
-			pencil_svg
-		},
-
-		methods: {
-			__submit(event) {
-				log(`${logPrefix}|__submit`)
-				event.preventDefault()
-				const {row__add} = this.refs
-				const {activeElement} = document
-				const feed = activeElement && activeElement.getAttribute('data-feed')
-				if (feed) {
-					this.__submit__edit(event, feed)
-					return
-				}
-				if (closest(row__add, activeElement, true)) {
-					this.__submit__add(event)
-				}
-			},
-			__submit__add(event) {
-				log(`${logPrefix}|__submit__add`)
-				const {input__url__feed, input__name__feed} = this.refs
-				const url__feed = input__url__feed.value
-				const name__feed = input__name__feed.value
-				this.store.add__feed({
-					url__feed,
-					name__feed
-				})
-				input__url__feed.value = ''
-				input__name__feed.value = ''
-			},
-			__submit__edit(event, feed) {
-				log(`${logPrefix}|__submit__edit`)
-				const {activeElement} = document
-				const row = closest('.row', activeElement, true)
-				const input__url__feed = _dom('[name=url__feed]', row)
-				const url__feed = input__url__feed.value
-				const input__name__feed = _dom('[name=name__feed]', row)
-				const name__feed = input__name__feed.value
-				this.store.edit__feed(feed, {url__feed, name__feed})
-			},
-			__click__edit(event, feed) {
-				log(`${logPrefix}|__click__edit`)
-				event.preventDefault()
-				this.set({
-					feed__edit:
-						this.get().feed__edit === feed
-							? null
-							: feed})
-			}
-		}
 	};
 </script>

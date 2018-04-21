@@ -1,8 +1,24 @@
-<Nav page=&#123;page}></Nav>
+<div class="Layout">
+	<Nav {page}></Nav>
 
-<main>
-	<slot></slot>
-</main>
+	<main>
+		<slot></slot>
+	</main>
+</div>
+
+<style type="text/scss" lang="sass">
+	.Layout {
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+	}
+	:global(nav) {
+		flex: 0;
+	}
+	main {
+		flex: 1;
+	}
+</style>
 
 <script>
 	import Nav from './Nav.html'

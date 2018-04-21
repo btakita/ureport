@@ -8,6 +8,14 @@ export const __store__feeds = _mixin__store('__store__feeds', store => {
 			feeds.push(feed)
 			store.set({feeds})
 		},
+		remove__feed(feed) {
+			const {feeds} = store.get()
+			const index = feeds.indexOf(feed)
+			if (typeof index === 'number') {
+				feeds.splice(index, 1)
+				store.set({feeds})
+			}
+		},
 		edit__feed(feed, feed__) {
 			assign(feed, feed__)
 			store.fire('edit__feed', {feed})

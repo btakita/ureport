@@ -1,0 +1,38 @@
+<div class="App__Feeds">
+	<div class="sidebar">
+		<Feeds></Feeds>
+	</div>
+	<div class="main"></div>
+</div>
+
+<style type="text/scss" lang="sass">
+	.App__Feeds {
+		display: flex;
+		flex-direction: row;
+		height: 100%;
+	}
+
+	.sidebar {
+		flex: 0;
+		width: 30rem;
+		min-width: 30rem;
+		max-width: 30rem;
+		padding: 1rem;
+		border-right: 1px solid #AAAAAA;
+	}
+
+	.main {
+		flex: 1;
+		padding: 1rem;
+	}
+</style>
+
+<script>
+	import Feeds from '__/feeds/Feeds.html'
+	const logPrefix = '__/feeds/App__Feeds.html'
+	export default {
+		components: {
+			Feeds
+		}
+	}
+</script>
