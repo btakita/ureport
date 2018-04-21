@@ -2,7 +2,9 @@
 	<div class="sidebar">
 		<Feeds></Feeds>
 	</div>
-	<div class="main"></div>
+	<div class="main">
+		<View__Feed></View__Feed>
+	</div>
 </div>
 
 <style type="text/scss" lang="sass">
@@ -29,10 +31,12 @@
 
 <script>
 	import Feeds from '__/feeds/Feeds.html'
+	import View__Feed from '__/feeds/View__Feed.html'
 	const logPrefix = '__/feeds/App__Feeds.html'
 	export default {
 		components: {
-			Feeds
+			Feeds,
+			View__Feed
 		}
 	}
 </script>

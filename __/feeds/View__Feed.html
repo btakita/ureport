@@ -1,0 +1,21 @@
+<div class="View__Feed">
+	{#each entries__feed as entry}
+		<div class="entry" id={entry.id}>
+			<div class="published">{entry.published}</div>
+			<div class="title">{entry.title}</div>
+			<div class="content">{@html entry.content}</div>
+			<div class="foobar">{@html '<a href="#">FOOBAR</a>'}</div>
+		</div>
+	{/each}
+</div>
+
+<script>
+	const logPrefix = '__/feeds/View__Feeds.html'
+	export default {
+		computed: {
+			entries__feed: ({$entries__feed}) => {
+				return $entries__feed || []
+			}
+		}
+	}
+</script>

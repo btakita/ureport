@@ -14,10 +14,15 @@
     "postinstall": "./bin/postinstall.sh"
   },
   "dependencies": {
+    "buble": "^0.19.3",
+    "buble-loader": "^0.5.0",
     "compression": "^1.7.2",
     "file-loader": "^1.1.11",
     "image-webpack-loader": "^4.2.0",
+    "node-fetch": "^2.1.2",
     "node-sass": "^4.8.3",
+    "nodent": "^3.2.0",
+    "nodent-loader": "^1.2.6",
     "npm-run-all": "^4.1.2",
     "open-iconic": "^1.1.1",
     "polka": "^0.3.4",
@@ -25,6 +30,7 @@
     "serve-static": "^1.13.2",
     "svelte": "^2.1.0",
     "svelte-loader": "^2.8.1",
-    "webpack": "^4.6.0"
+    "webpack": "^4.6.0",
+    "xmldom": "^0.1.27"
   }
 }

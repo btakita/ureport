@@ -1,9 +1,9 @@
 const webpack = require('webpack');
 const config = require('sapper/webpack/config.js');
 const {style} = require('./lib.js')
+const path = require('path')
 const mode = process.env.NODE_ENV;
 const isDev = mode === 'development';
-
 module.exports = {
 	entry: config.client.entry(),
 	output: config.client.output(),
@@ -12,6 +12,37 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			{
+				test: /\.(js|mjs|html|svelte)$/,
+        loaders: 'buble-loader',
+        include: path.join(__dirname, '../__'),
+        options: {
+          objectAssign: 'Object.assign',
+          transforms: {
+            dangerousTaggedTemplateString: true
+          },
+        },
+      },
+			{
+				test: /\.(js|mjs|html|svelte)$/,
+        loader: 'nodent-loader',
+        exclude: /(app|node_modules)/,
+        query: {
+          sourcemap: true,
+          promises: true,
+          noRuntime: true
+        }
+			},
+			{
+				test: /\.(js|mjs|html|svelte)$/,
+        loader: 'nodent-loader',
+        exclude: /(app|node_modules)/,
+        query: {
+          sourcemap: true,
+          promises: true,
+          noRuntime: true
+        }
+			},
 			{
 				test: /\.html$/,
 				exclude: /node_modules/,
@@ -40,7 +71,7 @@ module.exports = {
 						}
 					}
 				]
-			}
+			},
 		]
 	},
 	mode,

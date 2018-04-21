@@ -24,7 +24,7 @@
 		</li>
 	</ul>
 	{#each feeds as feed}
-		<ul class="row">
+		<ul class="row" on:click="__click__row__feed(event, feed)">
 			<li>
 				{#if feed == feed__edit}
 					<input
@@ -188,6 +188,10 @@
 					const filename = _filename__url(url__feed)
 					input__name__feed.value = filename
 				}
+			},
+			__click__row__feed(event, feed) {
+				log(`${logPrefix}|__click__row__feed`)
+				this.store.set({feed})
 			},
 			__click__edit(event, feed) {
 				log(`${logPrefix}|__click__edit`)

@@ -1,6 +1,7 @@
 const config = require('sapper/webpack/config.js');
 const pkg = require('../package.json');
 const {style} = require('./lib.js')
+const path = require('path')
 module.exports = {
 	entry: config.server.entry(),
 	output: config.server.output(),
@@ -11,6 +12,27 @@ module.exports = {
 	externals: Object.keys(pkg.dependencies),
 	module: {
 		rules: [
+			{
+				test: /\.(js|mjs|html|svelte)$/,
+        loaders: 'buble-loader',
+        include: path.join(__dirname, '../__'),
+        options: {
+          objectAssign: 'Object.assign',
+          transforms: {
+            dangerousTaggedTemplateString: true
+          },
+        },
+      },
+			{
+				test: /\.(js|mjs|html|svelte)$/,
+        loader: 'nodent-loader',
+        exclude: /(app|node_modules)/,
+        query: {
+          sourcemap: true,
+          promises: true,
+          noRuntime: true
+        }
+			},
 			{
 				test: /\.html$/,
 				exclude: /node_modules/,
