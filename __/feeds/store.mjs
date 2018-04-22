@@ -30,41 +30,71 @@ export const __store__feeds = _mixin__store('__store__feeds', store => {
 			store.set({feeds})
 		}
 	})
-	store.on('state', async ({changed,current}) => {
+	store.on('state', params => {
+		const {changed} = params
 		if (changed.feed) {
-			log(`${logPrefix}|__update|feed`)
-			const {feed} = current
-			const response__feed__xml = await fetch__feed__xml(feed)
-			const feed__xml = await response__feed__xml.text()
-			if (typeof DOMParser !== 'undefined') {
-				const parser = new DOMParser()
-				const dom = parser.parseFromString(feed__xml, 'text/xml')
-				const array__el__entry = dom.documentElement.querySelectorAll('entry')
-				const entries__feed = []
-				for (let i=0; i < array__el__entry.length; i++) {
-					const el__entry = array__el__entry[i]
-					const id = _innerText(el__entry.querySelector('id'))
-					const published = _innerText(el__entry.querySelector('published'))
-					const title = _innerText(el__entry.querySelector('title'))
-					const content = _innerText(el__entry.querySelector('content'))
-					entries__feed.push({
-						id,
-						published,
-						title,
-						content
-					})
-				}
-				store.set({entries__feed})
-			}
+			__state__feed(params)
 		}
 	})
 	store.reset__feeds()
 	function persist_feeds(feeds) {
 		localStorage.setItem('feeds', JSON.stringify(feeds))
 	}
+	async function __state__feed({current}) {
+		log(`${logPrefix}|__state__feed`)
+		const {feed} = current
+		const response__feed__xml = await fetch__feed__xml(feed)
+		const feed__xml = await response__feed__xml.text()
+		store.set({entry: null})
+		if (typeof DOMParser !== 'undefined') {
+			const parser = new DOMParser()
+			const dom = parser.parseFromString(feed__xml, 'text/xml')
+			const {documentElement} = dom
+			const array__el__entry = documentElement.querySelectorAll('entry')
+			if (array__el__entry && array__el__entry.length) return set__entries__feed__atom(array__el__entry)
+			const array__el__item = documentElement.querySelectorAll('item')
+			if (array__el__item && array__el__item.length) return set__entries__feed__rss(array__el__item)
+		}
+	}
+	function set__entries__feed__atom(array__el__entry) {
+		const entries__feed = []
+		for (let i=0; i < array__el__entry.length; i++) {
+			const el__entry = array__el__entry[i]
+			const id = _textContent(el__entry.querySelector('id'))
+			const published = _textContent(el__entry.querySelector('published'))
+			const title = _textContent(el__entry.querySelector('title'))
+			const content = _textContent(el__entry.querySelector('content'))
+			entries__feed.push({
+				id,
+				published,
+				title,
+				content
+			})
+		}
+		store.set({entries__feed})
+	}
+	function set__entries__feed__rss(array__el__item) {
+		const entries__feed = []
+		for (let i=0; i < array__el__item.length; i++) {
+			const el__entry = array__el__item[i]
+			const id = _textContent(el__entry.querySelector('guid'))
+			const published = _textContent(el__entry.querySelector('pubDate'))
+			const link = _textContent(el__entry.querySelector('link'))
+			const title = _textContent(el__entry.querySelector('title'))
+			const content = _textContent(el__entry.querySelector('description'))
+			entries__feed.push({
+				id,
+				published,
+				link,
+				title,
+				content
+			})
+		}
+		store.set({entries__feed})
+	}
 })
-export function _innerText(el) {
-  return el && el.innerHTML
+function _textContent(el) {
+  return el && el.textContent
 }
 export async function fetch__feed__xml(feed) {
 	return fetch(`/feed.xml?url=${encodeURIComponent(feed.url__feed)}`)

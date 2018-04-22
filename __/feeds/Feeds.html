@@ -24,7 +24,7 @@
 		</li>
 	</ul>
 	{#each feeds as feed}
-		<ul class="row" on:click="__click__row__feed(event, feed)">
+		<ul class="row {_class({selected: $feed == feed})}" on:click="__click__row__feed(event, feed)">
 			<li>
 				{#if feed == feed__edit}
 					<input
@@ -76,6 +76,14 @@
 		list-style: none;
 		width: 100%;
 		padding-left: 0;
+		&.selected {
+			li:first-child {
+				border-left-color: #AAAAAA;
+			}
+		}
+		li:first-child {
+			border-left: 2px solid transparent;
+		}
 		> * {
 			padding: 0.4em;
 			display: table-cell;
@@ -119,6 +127,7 @@
 </style>
 
 <script>
+	import {_class} from 'ctx-core/html/lib.mjs'
 	import {__store__feeds} from '__/feeds/store.mjs'
 	import {_dom, closest} from 'ctx-core/dom/lib.mjs'
 	import {_filename__url} from 'ctx-core/uri/lib.mjs'
@@ -136,6 +145,7 @@
 				$feeds || []
 		},
 		helpers: {
+			_class,
 			pencil_svg,
 			plus_svg,
 			x_svg

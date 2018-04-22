@@ -8,10 +8,13 @@
 </div>
 
 <style type="text/scss" lang="sass">
+	@import '__/layout/layout.scss';
 	.App__Feeds {
+		position: relative;
 		display: flex;
 		flex-direction: row;
 		height: 100%;
+		overflow: hidden;
 	}
 
 	.sidebar {
@@ -24,8 +27,12 @@
 	}
 
 	.main {
+		position: relative;
 		flex: 1;
-		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		overflow: auto;
+		height: calc(100vh - #{$height_nav} + 6px);
 	}
 </style>
 

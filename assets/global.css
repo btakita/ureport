@@ -6,6 +6,10 @@ body {
 	color: #333;
 }
 
+* {
+	box-sizing: border-box;
+}
+
 main {
 	position: relative;
 	background-color: white;

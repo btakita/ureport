@@ -1,20 +1,86 @@
 <div class="View__Feed">
-	{#each entries__feed as entry}
-		<div class="entry" id={entry.id}>
-			<div class="published">{entry.published}</div>
-			<div class="title">{entry.title}</div>
-			<div class="content">{@html entry.content}</div>
-			<div class="foobar">{@html '<a href="#">FOOBAR</a>'}</div>
+	<div class="entries">
+		{#each entries__feed as entry}
+			<ul
+				id={entry.id}
+				class="entry {_class({selected: $entry == entry})}"
+				on:click="__click__entry(event, entry)"
+			>
+				<li class="link">
+					<a href="{entry.link}" title="Visit Article" target="_blank"><img src="{external_link_svg}" alt="Visit Article"></a>
+				</li>
+				<li class="title">{entry.title}</li>
+				<li class="published">{entry.published}</li>
+			</ul>
+		{/each}
+	</div>
+
+	{#if $entry}
+		<div class="entry">
+			{@html $entry.content}
 		</div>
-	{/each}
+	{/if}
 </div>
 
+<style type="text/scss" lang="sass">
+	.View__Feed {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		max-height: 100%;
+		overflow: hidden;
+		> * {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+			flex-shrink: 0;
+			overflow: auto;
+		}
+		> .entries {
+			margin: 0;
+			padding: 0 1rem;
+		}
+		> .entry {
+			padding: 1rem;
+			border-top: 1px solid #AAAAAA;
+		}
+	}
+	.entries {
+		ul {
+			display: table-row;
+			margin: 0;
+			padding-left: 0;
+			cursor: pointer;
+			&.selected {
+				background: #EEEEEE;
+			}
+			li {
+				display: table-cell;
+				padding: 0 0.4rem;
+			}
+		}
+	}
+</style>
+
 <script>
+	import {_class} from 'ctx-core/html/lib.mjs'
+	import external_link_svg from 'open-iconic/svg/external-link.svg'
+	import {log} from 'ctx-core/logger/lib.mjs'
 	const logPrefix = '__/feeds/View__Feeds.html'
 	export default {
 		computed: {
 			entries__feed: ({$entries__feed}) => {
 				return $entries__feed || []
+			}
+		},
+		helpers: {
+			_class,
+			external_link_svg
+		},
+		methods: {
+			__click__entry(event, entry) {
+				log(`${logPrefix}|__click__entry`)
+				this.store.set({entry})
 			}
 		}
 	}
