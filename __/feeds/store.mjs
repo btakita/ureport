@@ -62,11 +62,13 @@ export const __store__feeds = _mixin__store('__store__feeds', store => {
 			const el__entry = array__el__entry[i]
 			const id = _textContent(el__entry.querySelector('id'))
 			const published = _textContent(el__entry.querySelector('published'))
+			const date__published = _date__published(published)
 			const title = _textContent(el__entry.querySelector('title'))
 			const content = _textContent(el__entry.querySelector('content'))
 			entries__feed.push({
 				id,
 				published,
+				date__published,
 				title,
 				content
 			})
@@ -79,12 +81,14 @@ export const __store__feeds = _mixin__store('__store__feeds', store => {
 			const el__entry = array__el__item[i]
 			const id = _textContent(el__entry.querySelector('guid'))
 			const published = _textContent(el__entry.querySelector('pubDate'))
+			const date__published = _date__published(published)
 			const link = _textContent(el__entry.querySelector('link'))
 			const title = _textContent(el__entry.querySelector('title'))
 			const content = _textContent(el__entry.querySelector('description'))
 			entries__feed.push({
 				id,
 				published,
+				date__published,
 				link,
 				title,
 				content
@@ -93,6 +97,9 @@ export const __store__feeds = _mixin__store('__store__feeds', store => {
 		store.set({entries__feed})
 	}
 })
+function _date__published(text__date) {
+  return text__date && Date.parse(text__date)
+}
 function _textContent(el) {
   return el && el.textContent
 }

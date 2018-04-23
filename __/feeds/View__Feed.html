@@ -1,18 +1,20 @@
 <div class="View__Feed">
 	<div class="entries">
-		{#each entries__feed as entry}
-			<ul
-				id={entry.id}
-				class="entry {_class({selected: $entry == entry})}"
-				on:click="__click__entry(event, entry)"
-			>
-				<li class="link">
-					<a href="{entry.link}" title="Visit Article" target="_blank"><img src="{external_link_svg}" alt="Visit Article"></a>
-				</li>
-				<li class="title">{entry.title}</li>
-				<li class="published">{entry.published}</li>
-			</ul>
-		{/each}
+		<div class="table">
+			{#each entries__feed as entry}
+				<ul
+					id={entry.id}
+					class="entry {_class({selected: $entry == entry})}"
+					on:click="__click__entry(event, entry)"
+				>
+					<li class="link">
+						<a href="{entry.link}" title="Visit Article" target="_blank"><img src="{external_link_svg}" alt="Visit Article"></a>
+					</li>
+					<li class="title">{entry.title}</li>
+					<li class="published" title={entry.published}>{_text__date__published(entry)}</li>
+				</ul>
+			{/each}
+		</div>
 	</div>
 
 	{#if $entry}
@@ -46,17 +48,21 @@
 		}
 	}
 	.entries {
-		ul {
-			display: table-row;
-			margin: 0;
-			padding-left: 0;
-			cursor: pointer;
-			&.selected {
-				background: #EEEEEE;
-			}
-			li {
-				display: table-cell;
-				padding: 0 0.4rem;
+		.table {
+			display: table;
+			ul {
+				display: table-row;
+				margin: 0;
+				padding-left: 0;
+				cursor: pointer;
+				&.selected {
+					background: #EEEEEE;
+				}
+				li {
+					display: table-cell;
+					padding: 0 0.4rem;
+					cursor: pointer;
+				}
 			}
 		}
 	}
@@ -64,10 +70,15 @@
 
 <script>
 	import {_class} from 'ctx-core/html/lib.mjs'
+	import {_text__time__since} from 'ctx-core/time/lib.mjs'
+	import {__store__feeds} from '__/feeds/store.mjs'
 	import external_link_svg from 'open-iconic/svg/external-link.svg'
 	import {log} from 'ctx-core/logger/lib.mjs'
 	const logPrefix = '__/feeds/View__Feeds.html'
 	export default {
+		oncreate() {
+			__store__feeds(this.store)
+		},
 		computed: {
 			entries__feed: ({$entries__feed}) => {
 				return $entries__feed || []
@@ -75,7 +86,11 @@
 		},
 		helpers: {
 			_class,
-			external_link_svg
+			external_link_svg,
+			_text__date__published(entry) {
+				const {date__published} = entry
+				return (date__published && `${_text__time__since(date__published)} ago`) || ''
+			}
 		},
 		methods: {
 			__click__entry(event, entry) {
