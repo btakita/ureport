@@ -1,5 +1,8 @@
 <div class="Layout">
-	<Nav {page}></Nav>
+	<div class="topbar">
+		<Nav {page}></Nav>
+		<slot name="menu"></slot>
+	</div>
 
 	<main>
 		<slot></slot>
@@ -12,8 +15,15 @@
 		flex-direction: column;
 		height: 100vh;
 	}
-	:global(nav) {
+	.topbar {
 		flex: 0;
+		display: flex;
+		width: 100%;
+		min-height: 3.5rem;
+		border-bottom: 1px solid rgba(170,30,30,0.1);
+		:global(nav) {
+			flex: 1;
+		}
 	}
 	main {
 		flex: 1;

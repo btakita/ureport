@@ -1,6 +1,6 @@
 const sass = require('node-sass')
 module.exports = {style}
-function style ({content, attributes}) {
+function style({ content, attributes }) {
   if (attributes.type !== 'text/scss') return;
   return new Promise((fulfil, reject) => {
     sass.render({

@@ -3,8 +3,26 @@
 </svelte:head>
 
 <Layout page='feeds'>
+	<div class="menu" slot="menu">
+		<button>&#9776</button>
+	</div>
 	<App__Feeds></App__Feeds>
 </Layout>
+
+<style type="text/scss" lang="sass">
+	.menu {
+		flex: 0;
+		min-width: 3rem;
+		padding: 0 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		button {
+			background: none;
+			border: none;
+		}
+	}
+</style>
 
 <script>
 	import {_store} from 'ctx-core/store/lib.mjs'

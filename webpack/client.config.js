@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const config = require('sapper/webpack/config.js');
-const {style} = require('./lib.js')
+const { style } = require('./lib.js')
 const path = require('path')
 const mode = process.env.NODE_ENV;
 const isDev = mode === 'development';
@@ -23,16 +23,6 @@ module.exports = {
           },
         },
       },
-			{
-				test: /\.(js|mjs|html|svelte)$/,
-        loader: 'nodent-loader',
-        exclude: /(app|node_modules)/,
-        query: {
-          sourcemap: true,
-          promises: true,
-          noRuntime: true
-        }
-			},
 			{
 				test: /\.(js|mjs|html|svelte)$/,
         loader: 'nodent-loader',

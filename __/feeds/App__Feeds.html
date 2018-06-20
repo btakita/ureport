@@ -1,9 +1,12 @@
 <div class="App__Feeds">
-	<div class="sidebar">
+	<div class="feeds">
 		<Feeds></Feeds>
 	</div>
-	<div class="main">
+	<div class="feed__source">
 		<View__Feed></View__Feed>
+	</div>
+	<div class="feed__destination">
+
 	</div>
 </div>
 
@@ -17,7 +20,7 @@
 		overflow: hidden;
 	}
 
-	.sidebar {
+	.feeds {
 		flex: 0;
 		width: 30rem;
 		min-width: 30rem;
@@ -26,7 +29,16 @@
 		border-right: 1px solid #AAAAAA;
 	}
 
-	.main {
+	.feed__source {
+		position: relative;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		overflow: auto;
+		height: calc(100vh - #{$height_nav} + 6px);
+	}
+
+	.feed__destination {
 		position: relative;
 		flex: 1;
 		display: flex;

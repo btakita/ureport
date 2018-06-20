@@ -42,7 +42,7 @@
 						on:change="__submit__edit(event, feed)"
 					/>
 				{:else}
-					<a href={feed.url__feed} target="_blank">{feed.name__feed}</a>
+					{feed.name__feed}
 				{/if}
 			</li>
 			<li class="col__buttons__feed">
@@ -141,7 +141,7 @@
 			__store__feeds(this.store)
 		},
 		computed: {
-			feeds: ({$feeds}) =>
+			feeds: ({ $feeds }) =>
 				$feeds || []
 		},
 		helpers: {
@@ -154,8 +154,8 @@
 			__submit(event) {
 				log(`${logPrefix}|__submit`)
 				event.preventDefault()
-				const {row__add} = this.refs
-				const {activeElement} = document
+				const { row__add } = this.refs
+				const { activeElement } = document
 				const feed = activeElement && activeElement.getAttribute('data-feed')
 				if (feed) {
 					this.__submit__edit(event, feed)
@@ -179,21 +179,21 @@
 			},
 			__submit__edit(event, feed) {
 				log(`${logPrefix}|__submit__edit`)
-				const {activeElement} = document
+				const { activeElement } = document
 				const row = closest('.row', activeElement, true)
 				const input__url__feed = _dom('[name=url__feed]', row)
 				const url__feed = input__url__feed.value
 				const input__name__feed = _dom('[name=name__feed]', row)
 				const name__feed = input__name__feed.value
-				this.store.edit__feed(feed, {url__feed, name__feed})
-				this.set({feed__edit: null})
+				this.store.edit__feed(feed, { url__feed, name__feed })
+				this.set({ feed__edit: null })
 			},
 			__change__input__url__feed(event) {
 				log(`${logPrefix}|__change__input__url__feed`)
-				const {input__url__feed, input__name__feed} = this.refs
+				const { input__url__feed, input__name__feed } = this.refs
 				const name__feed = input__name__feed.value
 				if (!name__feed) {
-					const {input__name__feed} = this.refs
+					const { input__name__feed } = this.refs
 					const url__feed = input__url__feed.value
 					const filename = _filename__url(url__feed)
 					input__name__feed.value = filename
@@ -201,7 +201,7 @@
 			},
 			__click__row__feed(event, feed) {
 				log(`${logPrefix}|__click__row__feed`)
-				this.store.set({feed})
+				this.store.set({ feed })
 			},
 			__click__edit(event, feed) {
 				log(`${logPrefix}|__click__edit`)
@@ -210,7 +210,7 @@
 					feed__edit:
 						this.get().feed__edit === feed
 							? null
-							: feed})
+							: feed })
 			},
 			__click__remove(event, feed) {
 				log(`${logPrefix}|__click__remove`)
